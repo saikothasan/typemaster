@@ -7,8 +7,10 @@ import type { SupabaseClient } from "@supabase/auth-helpers-nextjs"
 import type { Database } from "../../types/supabase"
 import type React from "react" // Added import for React
 
+type SupabaseClient = SupabaseClient<Database>
+
 type SupabaseContext = {
-  supabase: SupabaseClient<Database>
+  supabase: SupabaseClient
 }
 
 const Context = createContext<SupabaseContext | undefined>(undefined)
