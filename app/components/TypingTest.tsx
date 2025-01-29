@@ -41,7 +41,10 @@ type Difficulty = "easy" | "medium" | "hard"
 export default function TypingTest({
   userId,
   initialDifficulty = "easy",
-}: { userId: string; initialDifficulty?: Difficulty }) {
+}: {
+  userId: string
+  initialDifficulty: Difficulty
+}) {
   const [text, setText] = useState("")
   const [userInput, setUserInput] = useState("")
   const [startTime, setStartTime] = useState<number | null>(null)
