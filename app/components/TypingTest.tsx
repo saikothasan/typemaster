@@ -5,7 +5,13 @@ import { supabase, type Score } from "../../utils/supabase"
 import { AlertCircle, CheckCircle, BarChart2, RefreshCw } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import type React from "react"
+
+type Difficulty = "easy" | "medium" | "hard"
+
+interface TypingTestProps {
+  userId: string
+  initialDifficulty: Difficulty
+}
 
 const difficultyLevels = {
   easy: {
@@ -37,15 +43,7 @@ const difficultyLevels = {
   },
 }
 
-type Difficulty = "easy" | "medium" | "hard"
-
-export default function TypingTest({
-  userId,
-  initialDifficulty = "easy",
-}: {
-  userId: string
-  initialDifficulty: Difficulty
-}) {
+export default function TypingTest({ userId, initialDifficulty }: TypingTestProps) {
   const [text, setText] = useState("")
   const [userInput, setUserInput] = useState("")
   const [startTime, setStartTime] = useState<number | null>(null)
@@ -161,8 +159,8 @@ export default function TypingTest({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row justify-between items-center">
-        <div className="space-y-2 sm:space-y-0 sm:space-x-2 mb-4 sm:mb-0">
+      <div className="flex justify-between items-center">
+        <div className="space-x-2">
           {(["easy", "medium", "hard"] as const).map((level) => (
             <button
               key={level}
@@ -186,8 +184,8 @@ export default function TypingTest({
           </div>
         )}
       </div>
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
-        <p className="text-base sm:text-lg font-medium mb-4 break-all">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <p className="text-lg font-medium mb-4">
           {text.split("").map((char, index) => {
             let color = "text-gray-400"
             if (index < userInput.length) {
@@ -215,29 +213,29 @@ export default function TypingTest({
         />
       </div>
       {showResults && wpm !== null && accuracy !== null && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6 text-center space-y-4">
-          <h2 className="text-xl sm:text-2xl font-bold">Your Results</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center space-y-4">
+          <h2 className="text-2xl font-bold">Your Results</h2>
           <div className="flex justify-center space-x-8">
             <div>
-              <p className="text-2xl sm:text-3xl font-bold text-blue-500">{wpm}</p>
+              <p className="text-3xl font-bold text-blue-500">{wpm}</p>
               <p className="text-sm text-gray-600 dark:text-gray-400">Words per minute</p>
             </div>
             <div>
-              <p className="text-2xl sm:text-3xl font-bold text-green-500">{accuracy}%</p>
+              <p className="text-3xl font-bold text-green-500">{accuracy}%</p>
               <p className="text-sm text-gray-600 dark:text-gray-400">Accuracy</p>
             </div>
           </div>
-          <p className="text-base sm:text-lg">{getPerformanceMessage(wpm, accuracy)}</p>
-          <div className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <p className="text-lg">{getPerformanceMessage(wpm, accuracy)}</p>
+          <div className="flex justify-center space-x-4">
             <button
               onClick={startTest}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full inline-flex items-center justify-center transition duration-300 ease-in-out transform hover:scale-105"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full inline-flex items-center transition duration-300 ease-in-out transform hover:scale-105"
             >
               Try Again <RefreshCw className="ml-2" />
             </button>
             <Link
               href="/profile"
-              className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-full inline-flex items-center justify-center transition duration-300 ease-in-out transform hover:scale-105"
+              className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-full inline-flex items-center transition duration-300 ease-in-out transform hover:scale-105"
             >
               View Stats <BarChart2 className="ml-2" />
             </Link>
