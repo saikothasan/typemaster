@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 import { useTheme } from "next-themes"
 import { Sun, Moon, Home, Keyboard, Award, User, LogIn, LogOut } from "lucide-react"
 import { useSupabase } from "./SupabaseProvider"
-import type { Session } from "@supabase/auth-helpers-nextjs"
+import type { Session, SupabaseClient } from "@supabase/auth-helpers-nextjs"
 import type React from "react"
 
 export default function Navbar() {
@@ -16,13 +16,13 @@ export default function Navbar() {
   const { supabase } = useSupabase()
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }: { data: { session: Session | null } }) => {
       setSession(session)
     })
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((_event: string, session: Session | null) => {
       setSession(session)
     })
 
