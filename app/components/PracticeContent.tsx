@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
-import { supabase } from "../../utils/supabase"
 import TypingTest from "./TypingTest"
 import LoginPrompt from "./LoginPrompt"
+import { useSupabase } from "./SupabaseProvider"
 
 export default function PracticeContent() {
   const [session, setSession] = useState<any>(null)
   const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("easy")
   const searchParams = useSearchParams()
+  const { supabase } = useSupabase()
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -28,7 +29,7 @@ export default function PracticeContent() {
     }
 
     return () => subscription.unsubscribe()
-  }, [searchParams])
+  }, [searchParams, supabase])
 
   if (!session) {
     return <LoginPrompt />

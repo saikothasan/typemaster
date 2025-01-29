@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { supabase } from "../../utils/supabase"
 import { Award, Filter } from "lucide-react"
+import React from "react"
 
 type Difficulty = "easy" | "medium" | "hard" | "all"
 type TimeFrame = "daily" | "weekly" | "monthly" | "all-time"
@@ -69,9 +70,9 @@ export default function Leaderboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-center">Leaderboard</h1>
-      <div className="flex justify-between items-center">
-        <div className="space-x-2">
+      <h1 className="text-2xl sm:text-3xl font-bold text-center">Leaderboard</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <div className="space-y-2 sm:space-y-0 sm:space-x-2">
           <span className="font-semibold">Difficulty:</span>
           {(["all", "easy", "medium", "hard"] as const).map((level) => (
             <button
@@ -87,7 +88,7 @@ export default function Leaderboard() {
             </button>
           ))}
         </div>
-        <div className="space-x-2">
+        <div className="space-y-2 sm:space-y-0 sm:space-x-2">
           <span className="font-semibold">Time Frame:</span>
           {(["daily", "weekly", "monthly", "all-time"] as const).map((frame) => (
             <button
@@ -108,66 +109,68 @@ export default function Leaderboard() {
         </div>
       </div>
       <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50 dark:bg-gray-700">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Rank
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                User
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                WPM
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Accuracy
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Difficulty
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                Date
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
-            {scores.map((score, index) => (
-              <tr
-                key={score.id}
-                className={index % 2 === 0 ? "bg-gray-50 dark:bg-gray-900" : "bg-white dark:bg-gray-800"}
-              >
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    {index + 1}
-                    {index < 3 && <Award className="ml-2 text-yellow-400" size={16} />}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">{score.users.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap font-semibold text-blue-600 dark:text-blue-400">
-                  {score.wpm}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">{score.accuracy}%</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      score.difficulty === "easy"
-                        ? "bg-green-100 text-green-800"
-                        : score.difficulty === "medium"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {score.difficulty}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                  {new Date(score.created_at).toLocaleDateString()}
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Rank
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  User
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  WPM
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Accuracy
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Difficulty
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Date
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+              {scores.map((score, index) => (
+                <tr
+                  key={score.id}
+                  className={index % 2 === 0 ? "bg-gray-50 dark:bg-gray-900" : "bg-white dark:bg-gray-800"}
+                >
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      {index + 1}
+                      {index < 3 && <Award className="ml-2 text-yellow-400" size={16} />}
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap">{score.users.email}</td>
+                  <td className="px-4 py-4 whitespace-nowrap font-semibold text-blue-600 dark:text-blue-400">
+                    {score.wpm}
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap">{score.accuracy}%</td>
+                  <td className="px-4 py-4 whitespace-nowrap">
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        score.difficulty === "easy"
+                          ? "bg-green-100 text-green-800"
+                          : score.difficulty === "medium"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {score.difficulty}
+                    </span>
+                  </td>
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    {new Date(score.created_at).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )

@@ -13,6 +13,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js"
+import React from "react"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
 
@@ -96,26 +97,39 @@ export default function Profile() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold dark:text-white">Your Profile</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold dark:text-white">Your Profile</h1>
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-            <h2 className="text-xl font-semibold mb-2 dark:text-white">Average WPM</h2>
-            <p className="text-3xl font-bold text-blue-500">{stats.avgWpm}</p>
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 dark:text-white">Average WPM</h2>
+            <p className="text-2xl sm:text-3xl font-bold text-blue-500">{stats.avgWpm}</p>
           </div>
           <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-            <h2 className="text-xl font-semibold mb-2 dark:text-white">Average Accuracy</h2>
-            <p className="text-3xl font-bold text-green-500">{stats.avgAccuracy}%</p>
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 dark:text-white">Average Accuracy</h2>
+            <p className="text-2xl sm:text-3xl font-bold text-green-500">{stats.avgAccuracy}%</p>
           </div>
           <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-            <h2 className="text-xl font-semibold mb-2 dark:text-white">Total Tests</h2>
-            <p className="text-3xl font-bold text-purple-500">{stats.totalTests}</p>
+            <h2 className="text-lg sm:text-xl font-semibold mb-2 dark:text-white">Total Tests</h2>
+            <p className="text-2xl sm:text-3xl font-bold text-purple-500">{stats.totalTests}</p>
           </div>
         </div>
       )}
       <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 dark:text-white">Recent Performance</h2>
-        <Line data={chartData} />
+        <h2 className="text-lg sm:text-xl font-semibold mb-4 dark:text-white">Recent Performance</h2>
+        <div className="h-64 sm:h-80">
+          <Line
+            data={chartData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                },
+              },
+            }}
+          />
+        </div>
       </div>
     </div>
   )

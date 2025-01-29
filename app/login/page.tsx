@@ -14,12 +14,13 @@ export default function Login() {
     setError(null)
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
     })
     if (error) {
       setError("Failed to sign in. Please try again.")
       setLoading(false)
-    } else {
-      router.push("/practice")
     }
   }
 
