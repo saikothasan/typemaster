@@ -5,21 +5,22 @@ import { useSearchParams } from "next/navigation"
 import TypingTest from "./TypingTest"
 import LoginPrompt from "./LoginPrompt"
 import { useSupabase } from "./SupabaseProvider"
+import type { Session } from "@supabase/auth-helpers-nextjs"
 
 export default function PracticeContent() {
-  const [session, setSession] = useState<any>(null)
+  const [session, setSession] = useState<Session | null>(null)
   const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("easy")
   const searchParams = useSearchParams()
   const { supabase } = useSupabase()
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }: { data: { session: Session | null } }) => {
       setSession(session)
     })
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((_event: string, session: Session | null) => {
       setSession(session)
     })
 
