@@ -59,7 +59,8 @@
     "zod": "^3.24.1",
     "react-chartjs-2": "latest",
     "chart.js": "latest",
-    "@supabase/supabase-js": "latest"
+    "@supabase/supabase-js": "latest",
+    "@supabase/auth-helpers-nextjs": "latest"
   },
   "devDependencies": {
     "@types/node": "^20",
